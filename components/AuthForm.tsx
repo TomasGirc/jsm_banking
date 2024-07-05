@@ -21,6 +21,7 @@ import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn, signUp, random } from "@/lib/actions/user.actions";
 
 function AuthForm({ type }: { type: string }) {
   const router = useRouter();
@@ -34,6 +35,14 @@ function AuthForm({ type }: { type: string }) {
     defaultValues: {
       email: "",
       password: "",
+      firstName: "",
+      lastName: "",
+      address1: "",
+      city: "",
+      dateOfBirth: "",
+      postalCode: "",
+      ssn: "",
+      state: "",
     },
   });
 
@@ -42,12 +51,24 @@ function AuthForm({ type }: { type: string }) {
     setIsLoading(true);
 
     try {
-      setIsLoading(false);
       //Sign up with Appwrite and plain link token
 
       if (type === "sign-up") {
-        // const newUser = await signUp(data);
-        // setUser(newUser);
+        const userData = {
+          firstName: data.firstName!,
+          lastName: data.lastName!,
+          address1: data.address1!,
+          city: data.city!,
+          state: data.state!,
+          postalCode: data.postalCode!,
+          dateOfBirth: data.dateOfBirth!,
+          ssn: data.ssn!,
+          email: data.email,
+          password: data.password,
+        };
+
+        const newUser = await signUp(userData);
+        setUser(newUser);
       }
       if (type === "sign-in") {
         // const response = await signIn({
@@ -64,6 +85,7 @@ function AuthForm({ type }: { type: string }) {
       setIsLoading(false);
     }
   };
+
   return (
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
@@ -85,7 +107,7 @@ function AuthForm({ type }: { type: string }) {
       {user ? (
         <div className="flex flex-col gap-4">{/* PlaidLink */}</div>
       ) : (
-        <>
+        <div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {type === "sign-up" && (
@@ -186,10 +208,10 @@ function AuthForm({ type }: { type: string }) {
               href={type === "sign-in" ? "/sign-up" : "/sign-in"}
               className="form-link"
             >
-              {type === "sign-in" ? "Sing Up" : "Sing In"}
+              {type === "sign-in" ? "Sign Up" : "Sign In"}
             </Link>
           </footer>
-        </>
+        </div>
       )}
     </section>
   );

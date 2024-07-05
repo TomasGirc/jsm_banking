@@ -1,7 +1,7 @@
 import AuthForm from "@/components/AuthForm";
 import React from "react";
 
-function SingUp() {
+function SignUp() {
   return (
     <div className="flex-center size-full max-sm:px-6">
       <AuthForm type="sign-up" />
@@ -9,4 +9,4 @@ function SingUp() {
   );
 }
 
-export default SingUp;
+export default SignUp;
